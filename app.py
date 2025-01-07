@@ -11,7 +11,7 @@ def carregar_pedidos():
     if os.path.exists(file_path):
         pedidos = pd.read_csv(file_path)
     else:
-        pedidos = pd.DataFrame(columns=["ID", "Empresa", "Produto", "Qtd", "Valor", "Pedido por", "Status", "Recebido por", "Nº NF", "Dt. Receb.", "Hr. Receb."])
+        pedidos = pd.DataFrame(columns=["ID", "Empresa", "Produto", "Qtd.", "Valor (R$)", "Pedido por", "Status", "Recebido por", "Nº NF", "Dt. Receb.", "Hr. Receb."])
     return pedidos
 
 # Função para salvar pedidos no arquivo CSV
@@ -47,8 +47,8 @@ def lancar_pedido():
                 "ID": str(len(st.session_state.pedidos) + 1).zfill(3),
                 "Empresa": nome_empresa,
                 "Produto": produto,
-                "Qtd": quantidade,
-                "Valor": valor,
+                "Qtd.": quantidade,
+                "Valor (R$)": valor,
                 "Pedido por": pedido_por,                
                 "Status": "Pendente",
                 "Dt. Prev. Entrega": data_entrega,
