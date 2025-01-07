@@ -99,9 +99,10 @@ def confirmar_recebimento():
         pedido_id = st.text_input("ID do Pedido")
         data_recebimento = st.date_input("Data de Recebimento", value=datetime.today())
         hora_recebimento_formatada = datetime.now().strftime("%H:%M")
-        hora_recebimento = st.text_input("Hora de Recebimento", value=hora_recebimento_formatada) 
+        hora_recebimento = st.text_input("Hora de Recebimento", value=hora_recebimento_formatada)
         nf_recebimento = st.text_input("Número da Nota Fiscal")
         quem_recebeu = st.text_input("Recebido por")
+
         
         confirmar_button = st.form_submit_button(label='Confirmar Recebimento')
         
@@ -117,14 +118,14 @@ def confirmar_recebimento():
             st.session_state.pedidos.loc[st.session_state.pedidos['ID'] == pedido_id, 'Recebido por'] = quem_recebeu
             st.session_state.pedidos.loc[st.session_state.pedidos['ID'] == pedido_id, 'Nº NF'] = nf_recebimento
             st.session_state.pedidos.loc[st.session_state.pedidos['ID'] == pedido_id, 'Dt. Receb.'] = data_recebimento.strftime("%d/%m/%y")
-            st.session_state.pedidos.loc[st.session_state.pedidos['ID'] == pedido_id, 'Hr. Receb.'] = hora_recebimento_formatada
+            st.session_state.pedidos.loc[st.session_state.pedidos['ID'] == pedido_id, 'Hr. Receb.'] = hora_recebimento
             salvar_pedidos_excel(recebimento_info=recebimento_info)
             st.success("Recebimento confirmado com sucesso!")
             st.write(f"ID do Pedido: {pedido_id}")
             st.write(f"Recebido por: {quem_recebeu}")
             st.write(f"Nº NF: {nf_recebimento}")
             st.write(f"Dt. Receb.: {data_recebimento.strftime('%d/%m/%y')}")
-            st.write(f"Hr. Receb.: {hora_recebimento_formatada}")
+            st.write(f"Hr. Receb.: {hora_recebimento}")
 
 def main():    
     if 'pedidos' not in st.session_state:
@@ -146,32 +147,6 @@ def main():
         file_name='relatorio_pedidos.xlsx',
         mime='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
     )
-    
-    st.sidebar.markdown("")
-    st.sidebar.markdown("")
-    st.sidebar.markdown("")
-    st.sidebar.markdown("")
-    st.sidebar.markdown("")
-    st.sidebar.markdown("")
-    st.sidebar.markdown("")
-    st.sidebar.markdown("")
-    st.sidebar.markdown("")
-    st.sidebar.markdown("")
-    st.sidebar.markdown("")
-    st.sidebar.markdown("")
-    st.sidebar.markdown("")
-    st.sidebar.markdown("")
-    st.sidebar.markdown("")
-    st.sidebar.markdown("")
-    st.sidebar.markdown("")
-    st.sidebar.markdown("")
-    st.sidebar.markdown("")
-    st.sidebar.markdown("")
-    st.sidebar.markdown("")
-    st.sidebar.markdown("")
-    st.sidebar.markdown("")
-
-    st.sidebar.markdown("<h3 style='font-size:10px;'>Feito por Cauã Moreira</h3>", unsafe_allow_html=True)
 
 if __name__ == '__main__':
     main()
