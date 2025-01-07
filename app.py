@@ -51,7 +51,6 @@ def lancar_pedido():
                 "Valor (R$)": valor,
                 "Pedido por": pedido_por,                
                 "Status": "Pendente",
-                "Dt. Prev. Entrega": data_entrega,
                 "Recebido por": "",
                 "Nº NF": "",
                 "Dt. Receb.": "",
