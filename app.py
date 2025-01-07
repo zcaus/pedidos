@@ -2,26 +2,37 @@ import streamlit as st
 from datetime import datetime
 import pandas as pd
 import os
-import pickle
 from io import BytesIO
 
 if 'pedidos' not in st.session_state:
     st.session_state.pedidos = pd.DataFrame(columns=["ID", "Empresa", "Produto", "Qtd.", "Valor (R$)", "Pedido por", "Status", "Recebido por", "Nº NF", "Dt. Receb.", "Hr. Receb."])
 
-# Função para carregar pedidos do arquivo pickle
 def carregar_pedidos():
-    file_path = 'pedidos.pkl'
+    file_path = 'pedidos.xlsx'
     if os.path.exists(file_path):
-        with open(file_path, 'rb') as file:
-            st.session_state.pedidos = pickle.load(file)
+        st.session_state.pedidos = pd.read_excel(file_path)
     else:
         st.session_state.pedidos = pd.DataFrame(columns=["ID", "Empresa", "Produto", "Qtd.", "Valor (R$)", "Pedido por", "Status", "Recebido por", "Nº NF", "Dt. Receb.", "Hr. Receb."])
 
-# Função para salvar pedidos no arquivo pickle
-def salvar_pedidos():
-    file_path = 'pedidos.pkl'
-    with open(file_path, 'wb') as file:
-        pickle.dump(st.session_state.pedidos, file)
+def salvar_pedidos_excel(novo_pedido=None, recebimento_info=None):
+    file_path = 'pedidos.xlsx'
+    if os.path.exists(file_path):
+        existing_pedidos = pd.read_excel(file_path)
+        if novo_pedido is not None:
+            updated_pedidos = pd.concat([existing_pedidos, novo_pedido], ignore_index=True)
+        elif recebimento_info is not None:
+            updated_pedidos = existing_pedidos.copy()
+            for index, row in recebimento_info.iterrows():
+                updated_pedidos.loc[updated_pedidos['ID'] == row['ID'], 'Status'] = 'Entregue'
+                updated_pedidos.loc[updated_pedidos['ID'] == row['ID'], 'Recebido por'] = row['Recebido por']
+                updated_pedidos.loc[updated_pedidos['ID'] == row['ID'], 'Nº NF'] = row['Nº NF']
+                updated_pedidos.loc[updated_pedidos['ID'] == row['ID'], 'Dt. Receb.'] = row['Dt. Receb.']
+                updated_pedidos.loc[updated_pedidos['ID'] == row['ID'], 'Hr. Receb.'] = row['Hr. Receb.']
+    else:
+        updated_pedidos = st.session_state.pedidos if novo_pedido is None else novo_pedido
+    updated_pedidos['Hr. Receb.'] = updated_pedidos['Hr. Receb.'].apply(lambda x: x.strftime("%H:%M") if isinstance(x, datetime) else x)
+    updated_pedidos['Dt. Receb.'] = updated_pedidos['Dt. Receb.'].apply(lambda x: x.strftime("%d/%m/%y") if isinstance(x, datetime) else x)
+    updated_pedidos.to_excel(file_path, index=False)
 
 def gerar_excel_download_link(df):
     output = BytesIO()
@@ -58,7 +69,7 @@ def lancar_pedido():
                 "Hr. Receb.": ""
             }])
             st.session_state.pedidos = pd.concat([st.session_state.pedidos, novo_pedido], ignore_index=True)
-            salvar_pedidos()
+            salvar_pedidos_excel(novo_pedido=novo_pedido)
             st.success("Pedido lançado com sucesso!")
             st.write(f"Empresa: {nome_empresa}")
             st.write(f"Produto: {produto}")
@@ -108,7 +119,7 @@ def confirmar_recebimento():
             st.session_state.pedidos.loc[st.session_state.pedidos['ID'] == pedido_id, 'Nº NF'] = nf_recebimento
             st.session_state.pedidos.loc[st.session_state.pedidos['ID'] == pedido_id, 'Dt. Receb.'] = data_recebimento.strftime("%d/%m/%y")
             st.session_state.pedidos.loc[st.session_state.pedidos['ID'] == pedido_id, 'Hr. Receb.'] = hora_recebimento
-            salvar_pedidos()
+            salvar_pedidos_excel(recebimento_info=recebimento_info)
             st.success("Recebimento confirmado com sucesso!")
             st.write(f"ID do Pedido: {pedido_id}")
             st.write(f"Recebido por: {quem_recebeu}")
