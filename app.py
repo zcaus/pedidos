@@ -38,7 +38,6 @@ def lancar_pedido():
         produto = st.text_input("Produto")
         quantidade = st.number_input("Quantidade", min_value=1)
         valor = st.number_input("Valor", min_value=0.0, format="%.2f")
-        data_entrega = st.date_input("Data Prevista de Entrega")
         pedido_por = st.text_input("Pedido por")
         submit_button = st.form_submit_button(label='Lançar Pedido')
         
