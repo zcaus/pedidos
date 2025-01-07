@@ -98,10 +98,10 @@ def confirmar_recebimento():
     with st.form(key='confirmacao_form'):
         pedido_id = st.text_input("ID do Pedido")
         data_recebimento = st.date_input("Data de Recebimento", value=datetime.today())
-        hora_recebimento = st.time_input("Hora de Recebimento", value=datetime.now().time())
-        hora_recebimento_formatada = hora_recebimento.strftime("%H:%M")
         nf_recebimento = st.text_input("Número da Nota Fiscal")
         quem_recebeu = st.text_input("Recebido por")
+        hora_recebimento_formatada = datetime.now().strftime("%H:%M")
+        hora_recebimento = st.text_input("Hora de Recebimento", value=hora_recebimento_formatada) 
         
         confirmar_button = st.form_submit_button(label='Confirmar Recebimento')
         
@@ -111,7 +111,7 @@ def confirmar_recebimento():
                 "Recebido por": quem_recebeu,
                 "Nº NF": nf_recebimento,
                 "Dt. Receb.": data_recebimento,
-                "Hr. Receb.": hora_recebimento_formatada
+                "Hr. Receb.": hora_recebimento
             }])
             st.session_state.pedidos.loc[st.session_state.pedidos['ID'] == pedido_id, 'Status'] = 'Entregue'
             st.session_state.pedidos.loc[st.session_state.pedidos['ID'] == pedido_id, 'Recebido por'] = quem_recebeu
