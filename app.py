@@ -1,5 +1,5 @@
 import streamlit as st
-from datetime import datetime
+from datetime import datetime, timedelta
 import pandas as pd
 import os
 from io import BytesIO
@@ -94,7 +94,11 @@ def confirmar_recebimento():
         recebido_por = st.text_input("Recebido por")
         numero_nf = st.text_input("Número da Nota Fiscal")
         data_recebimento = st.date_input("Data de Recebimento", datetime.today())
-        hora_recebimento = st.time_input("Hora de Recebimento", datetime.now())
+                # Calcular horário 3 horas antes
+        horario_atual = datetime.now()
+        horario_ajustado = (horario_atual - timedelta(hours=3)).strftime("%H:%M")
+        
+        hora_recebimento = st.text_input("Hora de Recebimento", horario_ajustado)
         submit_button = st.form_submit_button("Confirmar Recebimento")
         
     if submit_button:
