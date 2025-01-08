@@ -115,9 +115,6 @@ def main():
         file_name='relatorio_pedidos.xlsx',
         mime='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
     )
-    
-    st.sidebar.markdown("---")
-    st.sidebar.markdown("<h3 style='font-size:10px;'>Feito por Cauã Moreira</h3>", unsafe_allow_html=True)
 
 if __name__ == '__main__':
     main()
