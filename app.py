@@ -4,11 +4,20 @@ import pandas as pd
 import os
 from io import BytesIO
 
+st.set_page_config(
+    page_title="Controle de Pedidos",
+    page_icon="image/mascote_instagram-removebg-preview.png",
+    layout="wide",
+    initial_sidebar_state="expanded",
+)
+
 FILE_PATH = 'pedidos.csv'
 
 def carregar_pedidos():
     if os.path.exists(FILE_PATH):
         pedidos = pd.read_csv(FILE_PATH)
+        pedidos["Nº Pedido"] = pedidos["Nº Pedido"].astype(str).str.replace(",", "")
+        pedidos["Nº NF"] = pedidos["Nº NF"].astype(str).str.replace(",", "")
     else:
         pedidos = pd.DataFrame(columns=["Nº Pedido", "Fornecedor", "Qtd.", "Valor (R$)", "Pedido por", "Recebido por", "Nº NF", "Dt. Receb.", "Hr. Receb.", "Status"])
         pedidos.to_csv(FILE_PATH, index=False)
