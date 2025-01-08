@@ -15,9 +15,7 @@ FILE_PATH = 'pedidos.csv'
 
 def carregar_pedidos():
     if os.path.exists(FILE_PATH):
-        pedidos = pd.read_csv(FILE_PATH)
-        pedidos["Nº Pedido"] = pedidos["Nº Pedido"].astype(str).str.replace(",", "")
-        pedidos["Nº NF"] = pedidos["Nº NF"].astype(str).str.replace(",", "")
+        pedidos = pd.read_csv(FILE_PATH, dtype=str)  # Carregar tudo como string inicialmente
     else:
         pedidos = pd.DataFrame(columns=["Nº Pedido", "Fornecedor", "Qtd.", "Valor (R$)", "Pedido por", "Recebido por", "Nº NF", "Dt. Receb.", "Hr. Receb.", "Status"])
         pedidos.to_csv(FILE_PATH, index=False)
