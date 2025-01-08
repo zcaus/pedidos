@@ -11,6 +11,19 @@ st.set_page_config(
     initial_sidebar_state="expanded",
 )
 
+st.markdown(
+    """
+    <script>
+    document.addEventListener('keydown', function(event) {
+        if (event.key === 'Enter' && event.target.nodeName === 'INPUT') {
+            event.preventDefault();
+        }
+    });
+    </script>
+    """,
+    unsafe_allow_html=True,
+)
+
 FILE_PATH = 'pedidos.csv'
 
 def carregar_pedidos():
@@ -36,18 +49,7 @@ def gerar_excel_download_link(df):
     return processed_data
 
 def lancar_pedido():
-    st.markdown("<h1 style='text-align: center;'>Sistema de Pedidos</h1>", unsafe_allow_html=True) 
-
-    st.markdown("""
-        <script type="text/javascript">
-            document.addEventListener('keydown', function(event) {
-                if (event.keyCode === 13) {
-                    event.preventDefault();
-                }
-            });
-        </script>
-    """, unsafe_allow_html=True)
-
+    st.markdown("<h1 style='text-align: center;'>Sistema de Pedidos</h1>", unsafe_allow_html=True)  
     with st.form(key='pedido_form'):
         numero_pedido = st.text_input("Nº Pedido")
         nome_empresa = st.text_input("Fornecedor")
@@ -82,18 +84,7 @@ def lancar_pedido():
                 st.write(f"Pedido por: {pedido_por}")
 
 def confirmar_recebimento():
-    st.markdown("<h1 style='text-align: center;'>Sistema de Recebimentos</h1>", unsafe_allow_html=True) 
-
-    st.markdown("""
-        <script type="text/javascript">
-            document.addEventListener('keydown', function(event) {
-                if (event.keyCode === 13) {
-                    event.preventDefault();
-                }
-            });
-        </script>
-    """, unsafe_allow_html=True)
-
+    st.markdown("<h1 style='text-align: center;'>Sistema de Recebimentos</h1>", unsafe_allow_html=True)  
 
     # Filtros
     col1, col2 = st.columns(2)
