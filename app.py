@@ -37,6 +37,7 @@ def gerar_excel_download_link(df):
 
 def lancar_pedido():
     st.markdown("<h1 style='text-align: center;'>Sistema de Pedidos</h1>", unsafe_allow_html=True)  
+
     with st.form(key='pedido_form'):
         numero_pedido = st.text_input("Nº Pedido")
         nome_empresa = st.text_input("Fornecedor")
@@ -45,8 +46,10 @@ def lancar_pedido():
         pedido_por = st.text_input("Pedido por")
         submit_button = st.form_submit_button(label='Lançar Pedido')
         
-        if submit_button:
-            if numero_pedido in st.session_state.pedidos["Nº Pedido"].values:
+    if submit_button:
+            if not numero_pedido or not nome_empresa or not quantidade or not valor or not pedido_por:
+                st.error("Todos os campos são obrigatórios!")
+            elif numero_pedido in st.session_state.pedidos["Nº Pedido"].values:
                 st.error("Erro: Número do pedido já existe!")
             else:
                 novo_pedido = pd.DataFrame([{
@@ -73,14 +76,12 @@ def lancar_pedido():
 def confirmar_recebimento():
     st.markdown("<h1 style='text-align: center;'>Sistema de Recebimentos</h1>", unsafe_allow_html=True)  
 
-    # Filtros
     col1, col2 = st.columns(2)
     with col1:
         fornecedor_filter = st.selectbox("Filtrar por Fornecedor", options=["Todos"] + list(st.session_state.pedidos["Fornecedor"].unique()))
     with col2:
         status_filter = st.selectbox("Filtrar por Status", options=["Todos"] + list(st.session_state.pedidos["Status"].unique()))
 
-    # Aplicar filtros
     filtered_pedidos = st.session_state.pedidos
     if fornecedor_filter != "Todos":
         filtered_pedidos = filtered_pedidos[filtered_pedidos["Fornecedor"] == fornecedor_filter]
@@ -94,7 +95,6 @@ def confirmar_recebimento():
         recebido_por = st.text_input("Recebido por")
         numero_nf = st.text_input("Número da Nota Fiscal")
         data_recebimento = st.date_input("Data de Recebimento", datetime.today())
-                # Calcular horário 3 horas antes
         horario_atual = datetime.now()
         horario_ajustado = (horario_atual - timedelta(hours=3)).strftime("%H:%M")
         
@@ -102,20 +102,19 @@ def confirmar_recebimento():
         submit_button = st.form_submit_button("Confirmar Recebimento")
         
     if submit_button:
-                if numero_pedido in st.session_state.pedidos["Nº Pedido"].values:
-
-                    index = st.session_state.pedidos[st.session_state.pedidos["Nº Pedido"] == numero_pedido].index[0]
-                    st.session_state.pedidos.at[index, "Recebido por"] = recebido_por
-                    st.session_state.pedidos.at[index, "Nº NF"] = numero_nf
-                    st.session_state.pedidos.at[index, "Dt. Receb."] = data_recebimento
-                    st.session_state.pedidos.at[index, "Hr. Receb."] = hora_recebimento
-                    
-                    st.session_state.pedidos.at[index, "Status"] = "Recebido"
-                    
-                    salvar_pedidos()
-                    st.success("Recebimento confirmado e status atualizado para 'Recebido'!")
-                else:
-                    st.error("Nº Pedido não encontrado!")
+        if not numero_pedido or not recebido_por or not numero_nf or not data_recebimento or not hora_recebimento:
+            st.error("Todos os campos são obrigatórios!")
+        elif numero_pedido in st.session_state.pedidos["Nº Pedido"].values:
+            index = st.session_state.pedidos[st.session_state.pedidos["Nº Pedido"] == numero_pedido].index[0]
+            st.session_state.pedidos.at[index, "Recebido por"] = recebido_por
+            st.session_state.pedidos.at[index, "Nº NF"] = numero_nf
+            st.session_state.pedidos.at[index, "Dt. Receb."] = data_recebimento
+            st.session_state.pedidos.at[index, "Hr. Receb."] = hora_recebimento
+            st.session_state.pedidos.at[index, "Status"] = "Recebido"
+            salvar_pedidos()
+            st.success("Recebimento confirmado!")
+        else:
+            st.error("Nº Pedido não encontrado!")
 
 def main():    
     if 'pedidos' not in st.session_state:
