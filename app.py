@@ -17,7 +17,7 @@ def carregar_pedidos():
     if os.path.exists(FILE_PATH):
         pedidos = pd.read_csv(FILE_PATH, dtype=str)  # Carregar tudo como string inicialmente
     else:
-        pedidos = pd.DataFrame(columns=["Nº Pedido", "Fornecedor", "Qtd.", "Valor (R$)", "Pedido por", "Recebido por", "Nº NF", "Dt. Receb.", "Hr. Receb.", "Status"])
+        pedidos = pd.DataFrame(columns=["Nº Pedido", "Fornecedor", "Qtd.", "Valor (R$)", "Pedido por", "Status" "Recebido por", "Nº NF", "Dt. Receb.", "Hr. Receb.","Tipo Documento", "Valor Incorreto"])
         pedidos.to_csv(FILE_PATH, index=False)
 
     return pedidos
@@ -62,7 +62,9 @@ def lancar_pedido():
                     "Recebido por": "",
                     "Nº NF": "",
                     "Dt. Receb.": "",
-                    "Hr. Receb.": ""
+                    "Hr. Receb.": "",
+                    "Tipo Documento": "",
+                    "Valor Incorreto": ""
                 }])
                 st.session_state.pedidos = pd.concat([st.session_state.pedidos, novo_pedido], ignore_index=True)
                 salvar_pedidos()
@@ -93,16 +95,29 @@ def confirmar_recebimento():
     with st.form("receber_pedido_form"):
         numero_pedido = st.text_input("Nº Pedido")
         recebido_por = st.text_input("Recebido por")
-        numero_nf = st.text_input("Número da Nota Fiscal")
+
+        col1, col2 = st.columns(2)
+        with col1:
+            tipo_documento = st.radio("Tipo de Documento", options=["NF", "Recibo"])
+        with col2:
+            numero_nf = st.text_input("Número da Nota Fiscal")
         data_recebimento = st.date_input("Data de Recebimento", datetime.today())
         horario_atual = datetime.now()
         horario_ajustado = (horario_atual - timedelta(hours=3)).strftime("%H:%M")
-        
         hora_recebimento = st.text_input("Hora de Recebimento", horario_ajustado)
+
+        col1, col2 = st.columns(2)
+        with col1:
+            valor_correto = st.radio("Valor correto?", options=["Sim", "Não"])
+        with col2:
+            valor_incorreto = st.text_input("Se não, qual valor?")
+
+        
+ 
         submit_button = st.form_submit_button("Confirmar Recebimento")
         
     if submit_button:
-        if not numero_pedido or not recebido_por or not numero_nf or not data_recebimento or not hora_recebimento:
+        if not numero_pedido or not recebido_por or not data_recebimento or not hora_recebimento:
             st.error("Todos os campos são obrigatórios!")
         elif numero_pedido in st.session_state.pedidos["Nº Pedido"].values:
             index = st.session_state.pedidos[st.session_state.pedidos["Nº Pedido"] == numero_pedido].index[0]
@@ -110,6 +125,8 @@ def confirmar_recebimento():
             st.session_state.pedidos.at[index, "Nº NF"] = numero_nf
             st.session_state.pedidos.at[index, "Dt. Receb."] = data_recebimento
             st.session_state.pedidos.at[index, "Hr. Receb."] = hora_recebimento
+            st.session_state.pedidos.at[index, "Tipo Documento"] = tipo_documento
+            st.session_state.pedidos.at[index, "Valor Incorreto"] = valor_incorreto
             st.session_state.pedidos.at[index, "Status"] = "Recebido"
             salvar_pedidos()
             st.success("Recebimento confirmado!")
