@@ -12,7 +12,7 @@ def carregar_pedidos():
     else:
         pedidos = pd.DataFrame(columns=["Nº Pedido", "Fornecedor", "Qtd.", "Valor (R$)", "Pedido por", "Recebido por", "Nº NF", "Dt. Receb.", "Hr. Receb.", "Status"])
         pedidos.to_csv(FILE_PATH, index=False)
-        
+
     return pedidos
 
 def salvar_pedidos():
@@ -48,7 +48,7 @@ def lancar_pedido():
                     "Qtd.": quantidade,
                     "Valor (R$)": valor,
                     "Pedido por": pedido_por,                
-                    "Status": "Pendente",
+                    "Status": "Em trânsito",
                     "Recebido por": "",
                     "Nº NF": "",
                     "Dt. Receb.": "",
