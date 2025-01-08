@@ -4,6 +4,13 @@ import pandas as pd
 import os
 from io import BytesIO
 
+st.set_page_config(
+    page_title="Controle de Pedidos",
+    page_icon="image/mascote_instagram-removebg-preview.png",
+    layout="wide",
+    initial_sidebar_state="expanded",
+)
+
 st.markdown(
     """
     <script>
@@ -15,13 +22,6 @@ st.markdown(
     </script>
     """,
     unsafe_allow_html=True,
-)
-
-st.set_page_config(
-    page_title="Controle de Pedidos",
-    page_icon="image/mascote_instagram-removebg-preview.png",
-    layout="wide",
-    initial_sidebar_state="expanded",
 )
 
 FILE_PATH = 'pedidos.csv'
