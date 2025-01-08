@@ -10,7 +10,7 @@ def carregar_pedidos():
     if os.path.exists(FILE_PATH):
         pedidos = pd.read_csv(FILE_PATH)
     else:
-        pedidos = pd.DataFrame(columns=["Nº Pedido", "Empresa", "Produto", "Qtd.", "Valor (R$)", "Pedido por", "Recebido por", "Nº NF", "Dt. Receb.", "Hr. Receb.", "Status"])
+        pedidos = pd.DataFrame(columns=["Nº Pedido", "Fornecedor", "Qtd.", "Valor (R$)", "Pedido por", "Recebido por", "Nº NF", "Dt. Receb.", "Hr. Receb.", "Status"])
         pedidos.to_csv(FILE_PATH, index=False)
     return pedidos
 
@@ -31,11 +31,9 @@ def lancar_pedido():
     st.markdown("<h1 style='text-align: center;'>Sistema de Pedidos</h1>", unsafe_allow_html=True)  
     with st.form(key='pedido_form'):
         numero_pedido = st.text_input("Nº Pedido")
-        nome_empresa = st.text_input("Empresa")
-        produto = st.text_input("Produto")
+        nome_empresa = st.text_input("Fornecedor")
         quantidade = st.number_input("Quantidade", min_value=1)
         valor = st.number_input("Valor", min_value=0.0, format="%.2f")
-        data_entrega = st.date_input("Data Prevista de Entrega")
         pedido_por = st.text_input("Pedido por")
         submit_button = st.form_submit_button(label='Lançar Pedido')
         
@@ -45,8 +43,7 @@ def lancar_pedido():
             else:
                 novo_pedido = pd.DataFrame([{
                     "Nº Pedido": numero_pedido,
-                    "Empresa": nome_empresa,
-                    "Produto": produto,
+                    "Fornecedor": nome_empresa,
                     "Qtd.": quantidade,
                     "Valor (R$)": valor,
                     "Pedido por": pedido_por,                
@@ -60,16 +57,29 @@ def lancar_pedido():
                 salvar_pedidos()
                 st.success("Pedido lançado com sucesso!")
                 st.write(f"Nº Pedido: {numero_pedido}")
-                st.write(f"Empresa: {nome_empresa}")
-                st.write(f"Produto: {produto}")
+                st.write(f"Fornecedor: {nome_empresa}")
                 st.write(f"Quantidade: {quantidade}")
                 st.write(f"Valor: R${valor:.2f}")
                 st.write(f"Pedido por: {pedido_por}")
 
 def confirmar_recebimento():
-    st.title("Receber Pedido")
+    st.markdown("<h1 style='text-align: center;'>Sistema de Recebimentos</h1>", unsafe_allow_html=True)  
 
-    st.dataframe(st.session_state.pedidos, use_container_width=True)
+    # Filtros
+    col1, col2 = st.columns(2)
+    with col1:
+        fornecedor_filter = st.selectbox("Filtrar por Fornecedor", options=["Todos"] + list(st.session_state.pedidos["Fornecedor"].unique()))
+    with col2:
+        status_filter = st.selectbox("Filtrar por Status", options=["Todos"] + list(st.session_state.pedidos["Status"].unique()))
+
+    # Aplicar filtros
+    filtered_pedidos = st.session_state.pedidos
+    if fornecedor_filter != "Todos":
+        filtered_pedidos = filtered_pedidos[filtered_pedidos["Fornecedor"] == fornecedor_filter]
+    if status_filter != "Todos":
+        filtered_pedidos = filtered_pedidos[filtered_pedidos["Status"] == status_filter]
+
+    st.dataframe(filtered_pedidos, use_container_width=True)
 
     with st.form("receber_pedido_form"):
         numero_pedido = st.text_input("Nº Pedido")

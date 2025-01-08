@@ -1,2 +1,1 @@
-Nº Pedido,Empresa,Produto,Qtd.,Valor (R$),Pedido por,Recebido por,Nº NF,Dt. Receb.,Hr. Receb.,Status
-
+Nº Pedido,Fornecedor,Qtd.,Valor (R$),Pedido por,Recebido por,Nº NF,Dt. Receb.,Hr. Receb.,Status
