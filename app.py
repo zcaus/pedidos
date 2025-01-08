@@ -10,7 +10,7 @@ def carregar_pedidos():
     if os.path.exists(FILE_PATH):
         pedidos = pd.read_csv(FILE_PATH)
     else:
-        pedidos = pd.DataFrame(columns=["Nº Pedido", "Empresa", "Produto", "Qtd.", "Valor (R$)", "Pedido por", "Status", "Recebido por", "Nº NF", "Dt. Receb.", "Hr. Receb."])
+        pedidos = pd.DataFrame(columns=["Nº Pedido", "Empresa", "Produto", "Qtd.", "Valor (R$)", "Pedido por", "Recebido por", "Nº NF", "Dt. Receb.", "Hr. Receb.", "Status"])
         pedidos.to_csv(FILE_PATH, index=False)
     return pedidos
 
