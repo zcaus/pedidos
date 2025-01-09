@@ -1,4 +1,12 @@
-﻿Nº Pedido,Fornecedor,Qtd.,Valor (R$),Pedido por,Status,Recebido por,Tipo Doc,Nº,Dt. Receb.,Hr. Receb.,Valor Divergente
-7881,TECHNA,420,"4800,47",Mariana,Em trânsito,,,,,,
-7874,OUROFIX,310,"1199,0",Mariana,Em trânsito,,,,,,
-7867,VJ FIKISS,10,"819,30",Mariana,Em trânsito,,,,,,
+﻿,Nº Pedido,Fornecedor,Qtd.,Valor (R$),Pedido por,Status,Recebido por,Tipo Doc,Nº,Dt. Receb.,Hr. Receb.,Valor Divergente
+0,7881,TECHNA,420,"4800,47",Mariana,Em trânsito,,,,,,
+1,7874,OUROFIX,310,1199,Mariana,Recebido,Cauã,NF, 15459 ,2025-01-07,10:07,
+2,7867,VJ FIKISS,10,"819,30",Mariana,Recebido,Cauã,NF, 24190 ,2025-01-07,10:08,
+3,7873,JOMARCA,2537,"23664,22",Mariana,Em trânsito,,,,,,
+4,7875,GW,130,"11390,30",Mariana,Em trânsito,,,,,,
+5,7872,NEWFIX,965,"7683,24",Mariana,Em trânsito,,,,,,
+6,7876,ANCORA,2100,"2795,63",Mariana,Em trânsito,,,,,,
+7,7877,BELLOSA,2700,"2446,60",Mariana,Em trânsito,,,,,,
+8,7868,DESLI,4000,"1045,05",Mariana,Em trânsito,,,,,,
+9,7880,UTILIMIX,1550,"857,50",Mariana,Em trânsito,,,,,,
+10,7879,FERA,237,"622,85",Mariana,Em trânsito,,,,,,
