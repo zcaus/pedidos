@@ -77,7 +77,7 @@ def lancar_pedido():
                 st.write(f"Nº Pedido: {numero_pedido}")
                 st.write(f"Fornecedor: {nome_empresa}")
                 st.write(f"Quantidade: {quantidade}")
-                st.write(f"Valor: R${valor:.2f}")
+                st.write(f"Valor: R$ {valor}")
                 st.write(f"Pedido por: {pedido_por}")
 
 def confirmar_recebimento():
