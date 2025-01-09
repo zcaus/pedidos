@@ -1,4 +1,4 @@
-﻿,Nº Pedido,Fornecedor,Qtd.,Valor (R$),Pedido por,Recebido por,Nº NF,Dt. Receb.,Hr. Receb.,Status
-0,7881,TECHNA,420,4800.47,Mariana,Alan,15459,2025-01-07,17:10,Recebido
-1,7874,OUROFIX,310,1199.0,Mariana,,,,,Em trânsito
-2,7867,VJ FIKISS,10,819.3,Mariana,,,,,Em trânsito
+﻿Nº Pedido,Fornecedor,Qtd.,Valor (R$),Pedido por,Status,Recebido por,Tipo Doc,Nº,Dt. Receb.,Hr. Receb.,Valor Divergente
+7881,TECHNA,420,"4800,47",Mariana,Em trânsito,,,,,,
+7874,OUROFIX,310,"1199,0",Mariana,Em trânsito,,,,,,
+7867,VJ FIKISS,10,"819,30",Mariana,Em trânsito,,,,,,
